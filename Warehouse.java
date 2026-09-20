@@ -1,0 +1,88 @@
+import java.util.List;
+
+public class Warehouse 
+{
+    private final ClientList clientList = new ClientList();
+    private final Catalog catalog = new Catalog();
+    private int nextProductID = 2000;        // façade owns the product ID scheme
+
+    public String addClient(String name, String address) 
+    {
+        Client c = new Client(name, address); // Client generates its own ID
+        clientList.addClient(c);
+        return c.getID();
+    }
+
+    public String addProduct(String name, double price, int stock) 
+    {
+        String productID = "P" + (++nextProductID);
+        Product p = new Product(name, price, stock);
+        catalog.addProduct(p);
+        return productID;
+    }
+
+    public boolean addToWishlist(String clientID, String productID) 
+    {
+        return addToWishlist(clientID, productID, 1);
+    }
+
+    public boolean addToWishlist(String clientID, String productID, int quantity) 
+    {
+        if (clientList.searchForClient(clientID) == null) 
+            return false;  // validate client
+        if (catalog.searchForProduct(productID) == null) 
+            return false;   // validate product
+        return clientList.addClientWishlistEntry(clientID, productID, quantity);
+    }
+
+    public void printAllClients() 
+    {
+        List<Client> all = clientList.getAllClients();
+        if (all.isEmpty()) 
+        { 
+            System.out.println("No clients available."); 
+            return; 
+        }
+        for (Client c : all) 
+        {
+            System.out.println("ID=" + c.getID() + ", Name=" + c.getName() + ", Address=" + c.getAddress());
+        }
+    }
+
+    public void printAllProducts() 
+    {
+        List<Product> all = catalog.getAllProducts();
+        if (all.isEmpty()) 
+        { 
+            System.out.println("No products available."); 
+            return; 
+        }
+        for (Product p : all) 
+        {
+            System.out.println("ID=" + p.getID() + ", Name=" + p.getName()
+                    + ", Price=" + p.getPrice() + ", Stock=" + p.getStock());
+        }
+    }
+
+    public void printClientWishlist(String clientID) 
+    {
+        List<WishlistItem> items = clientList.getClientWishlist(clientID);
+        if (items == null) 
+        { 
+            System.out.println("Client not found."); 
+            return; 
+        }
+        if (items.isEmpty()) 
+        { 
+            System.out.println("Wishlist is empty."); 
+            return; 
+        }
+        for (WishlistItem w : items) 
+        {
+            Product p = catalog.searchForProduct(w.getProductID());
+            if (p == null) continue;
+            System.out.println("Name=" + p.getName() + ", Price=" + p.getPrice()
+                    + ", WishlistQty=" + w.getQuantity() + ", Stock=" + p.getStock());
+        }
+    }
+}
