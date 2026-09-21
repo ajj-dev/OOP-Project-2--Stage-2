@@ -9,6 +9,7 @@ public class Client
     private String name;
     private String address;
     private final List<WishlistItem> wishlist = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
 
     // Client generates its own ID.
     public Client(String name, String address) 
@@ -77,4 +78,9 @@ public class Client
     { 
         this.address = address; 
     }
+
+    // Account history: orders, invoices, payments (populated in later stages).
+    public void addTransaction(Transaction t) { transactions.add(t); }
+    public List<Transaction> getTransactions() { return new ArrayList<>(transactions); }
+
 }

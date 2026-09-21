@@ -85,4 +85,48 @@ public class Warehouse
                     + ", WishlistQty=" + w.getQuantity() + ", Stock=" + p.getStock());
         }
     }
+
+    // --- Waitlist (product-side): clients waiting on an out-of-stock product ---
+    public boolean addToWaitlist(String productID, String clientID, int quantity)
+    {
+        Product p = catalog.searchForProduct(productID);
+        if (p == null) return false;
+        if (clientList.searchForClient(clientID) == null) return false;
+        return p.addToWaitlist(clientID, quantity);
+    }
+    public List<WaitlistItem> getProductWaitlist(String productID)
+    {
+        Product p = catalog.searchForProduct(productID);
+        return (p == null) ? null : p.getWaitlist();
+    }
+    public void printProductWaitlist(String productID)
+    {
+        List<WaitlistItem> wl = getProductWaitlist(productID);
+        if (wl == null)      { System.out.println("Product not found."); return; }
+        if (wl.isEmpty())    { System.out.println("Waitlist is empty."); return; }
+        for (WaitlistItem w : wl)
+            System.out.println("Client=" + w.getClientID() + ", WaitingQty=" + w.getQuantity());
+    }
+
+    // --- Transactions: dated history on a client account ---
+    public boolean recordTransaction(String clientID, String type, String description, double amount)
+    {
+        Client c = clientList.searchForClient(clientID);
+        if (c == null) return false;
+        c.addTransaction(new Transaction(type, description, amount));
+        return true;
+    }
+    public List<Transaction> getClientTransactions(String clientID)
+    {
+        Client c = clientList.searchForClient(clientID);
+        return (c == null) ? null : c.getTransactions();
+    }
+    public void printClientTransactions(String clientID)
+    {
+        List<Transaction> ts = getClientTransactions(clientID);
+        if (ts == null)   { System.out.println("Client not found."); return; }
+        if (ts.isEmpty()) { System.out.println("No transactions."); return; }
+        for (Transaction t : ts) System.out.println(t);
+    }
+
 }

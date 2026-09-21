@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Product 
 {
     private static int nextID = 2000;
@@ -6,6 +9,7 @@ public class Product
     private String name;
     private double price;
     private int stock;
+    private final List<WaitlistItem> waitlist = new ArrayList<>();
 
     // New product — Product generates its own ID.
     public Product(String name, double price, int stock) 
@@ -63,4 +67,21 @@ public class Product
     { 
         this.stock = stock; 
     }
+
+    // Waitlist: clients waiting for this product when stock is short.
+    public boolean addToWaitlist(String clientID, int quantity)
+    {
+        for (WaitlistItem w : waitlist)
+        {
+            if (w.getClientID().equals(clientID))
+            {
+                w.setQuantity(w.getQuantity() + quantity);
+                return true;
+            }
+        }
+        waitlist.add(new WaitlistItem(clientID, quantity));
+        return true;
+    }
+    public List<WaitlistItem> getWaitlist() { return new ArrayList<>(waitlist); }
+
 }
