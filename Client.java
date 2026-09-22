@@ -69,6 +69,13 @@ public class Client
     { 
         return clientID; 
     }
+    private double balance = 0.0;                 // credit(+) / debit(-)
+
+    public double getBalance() 
+    { 
+        return balance; 
+    }
+    
     // Setters
     public void setName(String name) 
     { 
@@ -79,7 +86,7 @@ public class Client
         this.address = address; 
     }
 
-    // Account history: orders, invoices, payments (populated in later stages).
+    // Account history: orders, invoices, payments.
     public void addTransaction(Transaction t) { transactions.add(t); }
     public List<Transaction> getTransactions() { return new ArrayList<>(transactions); }
 

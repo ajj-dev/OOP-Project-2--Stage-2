@@ -45,7 +45,7 @@ public class Warehouse
         }
         for (Client c : all) 
         {
-            System.out.println("ID=" + c.getID() + ", Name=" + c.getName() + ", Address=" + c.getAddress());
+             System.out.println("ID=" + c.getID() + ", Name=" + c.getName() + ", Address=" + c.getAddress() + ", Balance=$" + String.format("%.2f", c.getBalance()));
         }
     }
 
