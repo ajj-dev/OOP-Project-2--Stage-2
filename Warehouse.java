@@ -4,7 +4,6 @@ public class Warehouse
 {
     private final ClientList clientList = new ClientList();
     private final Catalog catalog = new Catalog();
-    private int nextProductID = 2000;        // façade owns the product ID scheme
 
     public String addClient(String name, String address) 
     {
@@ -15,10 +14,9 @@ public class Warehouse
 
     public String addProduct(String name, double price, int stock) 
     {
-        String productID = "P" + (++nextProductID);
         Product p = new Product(name, price, stock);
         catalog.addProduct(p);
-        return productID;
+        return p.getID();
     }
 
     public boolean addToWishlist(String clientID, String productID) 
