@@ -69,11 +69,12 @@ public class Client
     { 
         return clientID; 
     }
-    private double balance = 0.0;                 // credit(+) / debit(-)
 
     public double getBalance() 
     { 
-        return balance; 
+        double balance = 0.0;
+        for (Transaction t : transactions) balance += t.getAmount();
+        return balance;
     }
     
     // Setters
