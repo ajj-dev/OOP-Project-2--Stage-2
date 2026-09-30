@@ -21,4 +21,10 @@ public class WishlistItem
     { 
         this.quantity = quantity; 
     }
+    
+    @Override
+    public String toString() 
+    {
+        return "Product " + productID + ", qty " + quantity;
+    }
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 public class Client 
 {
@@ -10,6 +11,7 @@ public class Client
     private String address;
     private final List<WishlistItem> wishlist = new ArrayList<>();
     private final List<Transaction> transactions = new ArrayList<>();
+    private final List<WishlistItem> waitlist = new ArrayList<>();
 
     // Client generates its own ID.
     public Client(String name, String address) 
@@ -85,6 +87,62 @@ public class Client
     public void setAddress(String address) 
     { 
         this.address = address; 
+    }
+
+    public void updateWishlistEntry(String productID, int quantity)
+    {
+        Iterator<WishlistItem> it = wishlist.iterator();
+        while (it.hasNext())
+        {
+            WishlistItem w = it.next();
+            if (w.getProductID().equals(productID))
+            {
+                if (quantity <= 0) it.remove();          // remove
+                else w.setQuantity(quantity);            // change quantity (or no-op if same)
+                return;
+            }
+        }
+    }
+
+    public void setWishlistQuantity(String productID, int quantity)
+    {
+        for (WishlistItem w : wishlist)
+            if (w.getProductID().equals(productID)) { w.setQuantity(quantity); return; }
+    }
+
+    public int getWishlistQuantity(String productID)
+    {
+        for (WishlistItem w : wishlist)
+            if (w.getProductID().equals(productID)) return w.getQuantity();
+        return 0;
+    }
+
+    public void removeWishlistEntry(String productID)
+    {
+        wishlist.removeIf(w -> w.getProductID().equals(productID));
+    }
+
+    public void setWaitlistQuantity(String productID, int quantity)
+    {
+        for (WishlistItem w : waitlist)
+            if (w.getProductID().equals(productID)) { w.setQuantity(quantity); return; }
+    }
+
+    public void removeWaitlistEntry(String productID)
+    {
+        waitlist.removeIf(w -> w.getProductID().equals(productID));
+    }
+
+    public int getWaitlistQuantity(String productID)
+    {
+        for (WishlistItem w : waitlist)
+            if (w.getProductID().equals(productID)) return w.getQuantity();
+        return 0;
+    }
+
+    public List<WishlistItem> getWaitlistItems() 
+    { 
+        return waitlist; 
     }
 
     // Account history: orders, invoices, payments.

@@ -34,7 +34,8 @@ public class Transaction
         return date;
     }
 
-    public @Override String toString()
+    @Override
+    public String toString()
     {
         return "[" + date + "] " + type + ": " + description
              + String.format(" ($%.2f)", amount);

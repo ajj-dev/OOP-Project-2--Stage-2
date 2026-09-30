@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class UserInterface 
 {
@@ -21,6 +23,9 @@ public class UserInterface
                 case "4": warehouse.printAllClients(); break;
                 case "5": warehouse.printAllProducts(); break;
                 case "6": printClientWishlist(); break;
+                case "7": processClientOrder(); break;
+                case "8": receiveShipment(); break;
+                case "9": receivePayment(); break;
                 case "0": return;
                 default:  System.out.println("Invalid option.");
             }
@@ -62,5 +67,99 @@ public class UserInterface
     public static void main(String[] args) 
     {
         new UserInterface().run();
+    }
+
+    public void processClientOrder()
+    {
+        System.out.print("Enter client ID: "); 
+        String clientID = in.nextLine();
+
+        List<WishlistItem> wishlist = warehouse.getClientWishlist(clientID);
+        if (wishlist == null) 
+        {
+            System.out.println("Client not found.");
+            return;
+        }
+        if (wishlist.isEmpty()) 
+        {
+            System.out.println("Wishlist is empty.");
+            return;
+        }
+
+        List<OrderLine> lines = new ArrayList<>();
+        for (WishlistItem w : wishlist)
+        {
+            System.out.println(w);
+            System.out.print("Order this item? (y/n): ");
+            boolean order = in.nextLine().trim().equalsIgnoreCase("y");
+            if (!order) continue;
+
+            System.out.print("Enter quantity: ");
+            int qty = Integer.parseInt(in.nextLine().trim());
+            lines.add(new OrderLine(w.getProductID(), qty));
+        }
+        String summary = warehouse.createOrder(clientID, lines);
+        System.out.println(summary);
+    }
+
+    public void receiveShipment()
+    {
+        List<ShipmentLine> lines = new ArrayList<>();
+
+        System.out.println("Enter shipment lines. Blank product ID when done.");
+        while (true)
+        {
+            System.out.print("Product ID (blank to finish): ");
+            String productID = in.nextLine().trim();
+            if (productID.isEmpty()) break;
+
+            System.out.print("Quantity received: ");
+            int qty;
+            try
+            {
+                qty = Integer.parseInt(in.nextLine().trim());
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("  Not a number — line skipped.");
+                continue;
+            }
+            if (qty <= 0)
+            {
+                System.out.println("  Quantity must be positive — line skipped.");
+                continue;
+            }
+
+            lines.add(new ShipmentLine(productID, qty));
+        }
+
+        if (lines.isEmpty())
+        {
+            System.out.println("No shipment lines entered.");
+            return;
+        }
+
+        String report = warehouse.receiveShipment(lines);
+        System.out.println(report);
+    }
+
+    public void receivePayment()
+    {
+        System.out.print("Enter client ID: ");
+        String clientID = in.nextLine().trim();
+
+        System.out.print("Enter payment amount: ");
+        double amount;
+        try
+        {
+            amount = Double.parseDouble(in.nextLine().trim());
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("Not a valid amount.");
+            return;
+        }
+
+        System.out.println(warehouse.receivePayment(clientID, amount));
     }
 }
