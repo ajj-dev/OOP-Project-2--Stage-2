@@ -1,5 +1,17 @@
+/**
+ * Demonstrates the warehouse system with a small working example.
+ *
+ * <p>This class creates sample clients and products, adds wishlist entries,
+ * prints the current catalog and wishlist state, and serves as a basic smoke
+ * test for the warehouse data model.</p>
+ */
 public class Driver 
 {
+    /**
+     * Runs the example scenario for the warehouse application.
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) 
     {
         Warehouse w = new Warehouse();
