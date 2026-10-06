@@ -176,15 +176,10 @@ public class Product
         return true;
     }
 
-    /**
-     * Returns the clients waiting for this product, in the order they joined.
-     *
-     * <p>The returned list is a <em>copy</em>: adding to or removing from it does
-     * not change this product's waitlist. The entries themselves are shared,
-     * however, so changing an entry's quantity does affect the real waitlist.</p>
-     *
-     * @return a new list containing this product's waitlist entries
-     */
+    public void removeWaitlistEntries(List<WaitlistItem> entries)
+    {
+        waitlist.removeAll(entries);
+    }
     public List<WaitlistItem> getWaitlist() { return new ArrayList<>(waitlist); }
 
 }

@@ -21,13 +21,21 @@ import java.util.ArrayList;
  * charges are negative and payments are positive, so a negative balance means
  * the client owes money and a positive balance is a credit.</p>
  */
-public class Warehouse 
+public class Warehouse
 {
     /** All registered clients. */
     private final ClientList clientList = new ClientList();
 
     /** All products the warehouse carries. */
     private final Catalog catalog = new Catalog();
+
+    private static final Warehouse instance = new Warehouse();
+    private Warehouse() {} // Private constructor to enforce singleton pattern
+
+    public static Warehouse getInstance()
+    {
+        return instance;
+    }
 
     /**
      * Registers a new client.
@@ -36,7 +44,7 @@ public class Warehouse
      * @param address the client's address
      * @return the id generated for the new client
      */
-    public String addClient(String name, String address) 
+    public String addClient(String name, String address)
     {
         Client c = new Client(name, address); // Client generates its own ID
         clientList.addClient(c);
@@ -51,7 +59,7 @@ public class Warehouse
      * @param stock the number of units initially on hand
      * @return the id generated for the new product
      */
-    public String addProduct(String name, double price, int stock) 
+    public String addProduct(String name, double price, int stock)
     {
         Product p = new Product(name, price, stock);
         catalog.addProduct(p);
@@ -66,7 +74,7 @@ public class Warehouse
      * @return {@code true} if the entry was added; {@code false} if either id is unknown
      * @see #addToWishlist(String, String, int)
      */
-    public boolean addToWishlist(String clientID, String productID) 
+    public boolean addToWishlist(String clientID, String productID)
     {
         return addToWishlist(clientID, productID, 1);
     }
@@ -81,119 +89,62 @@ public class Warehouse
      * @param quantity  the number of units to add
      * @return {@code true} if the entry was added; {@code false} if either id is unknown
      */
-    public boolean addToWishlist(String clientID, String productID, int quantity) 
+    public boolean addToWishlist(String clientID, String productID, int quantity)
     {
-        if (clientList.searchForClient(clientID) == null) 
+        if (clientList.searchForClient(clientID) == null)
             return false;  // validate client
-        if (catalog.searchForProduct(productID) == null) 
+        if (catalog.searchForProduct(productID) == null)
             return false;   // validate product
         return clientList.addClientWishlistEntry(clientID, productID, quantity);
     }
 
-    /**
-     * Prints every client's id, name, address, and current balance, one per
-     * line, or a message if there are no clients.
-     */
-    public void printAllClients() 
+    public List<Client> getAllClients()
     {
-        List<Client> all = clientList.getAllClients();
-        if (all.isEmpty()) 
-        { 
-            System.out.println("No clients available."); 
-            return; 
-        }
-        for (Client c : all) 
-        {
-             System.out.println("ID=" + c.getID() + ", Name=" + c.getName() + ", Address=" + c.getAddress() + ", Balance=$" + String.format("%.2f", c.getBalance()));
-        }
+        return clientList.getAllClients();
     }
 
-    /**
-     * Prints every product's id, name, price, and stock level, one per line,
-     * or a message if there are no products.
-     */
-    public void printAllProducts() 
+    public List<Product> getAllProducts()
     {
-        List<Product> all = catalog.getAllProducts();
-        if (all.isEmpty()) 
-        { 
-            System.out.println("No products available."); 
-            return; 
-        }
-        for (Product p : all) 
-        {
-            System.out.println("ID=" + p.getID() + ", Name=" + p.getName()
-                    + ", Price=" + p.getPrice() + ", Stock=" + p.getStock());
-        }
+        return catalog.getAllProducts();
     }
 
-    /**
-     * Prints each product on a client's wishlist with its name, price, the
-     * quantity wished for, and the current stock level. Prints a message instead
-     * if the client is unknown or the wishlist is empty. Entries whose product
-     * can no longer be found are skipped.
-     *
-     * @param clientID the id of the client
-     */
-    public void printClientWishlist(String clientID) 
+    public List<WishlistView> getClientWishlistView(String clientID)
     {
         List<WishlistItem> items = clientList.getClientWishlist(clientID);
-        if (items == null) 
-        { 
-            System.out.println("Client not found."); 
-            return; 
-        }
-        if (items.isEmpty()) 
-        { 
-            System.out.println("Wishlist is empty."); 
-            return; 
-        }
-        for (WishlistItem w : items) 
+        if (items == null) return null;
+        List<WishlistView> views = new ArrayList<>();
+        for (WishlistItem item : items)
         {
-            Product p = catalog.searchForProduct(w.getProductID());
+            Product p = catalog.searchForProduct(item.getProductID());
             if (p == null) continue;
-            System.out.println("Name=" + p.getName() + ", Price=" + p.getPrice()
-                    + ", WishlistQty=" + w.getQuantity() + ", Stock=" + p.getStock());
+            views.add(new WishlistView(item.getProductID(), p.getName(), p.getPrice(), item.getQuantity(), p.getStock()));
         }
+        return views;
     }
 
-    /**
-     * Places a client on a product's waitlist for a quantity, after checking that
-     * both the product and the client exist. If the client is already waiting
-     * for the product, the quantity is added to their existing entry.
-     *
-     * @param productID the id of the product
-     * @param clientID  the id of the waiting client
-     * @param quantity  the number of units the client is waiting for
-     * @return {@code true} if the client was waitlisted; {@code false} if either id is unknown
-     */
-    public boolean addToWaitlist(String productID, String clientID, int quantity)
+    public List<WaitlistView> getProductWaitlistView(String productID)
     {
         Product p = catalog.searchForProduct(productID);
-        if (p == null) return false;
-        if (clientList.searchForClient(clientID) == null) return false;
-        return p.addToWaitlist(clientID, quantity);
+        if (p == null) return null;
+        List<WaitlistItem> items = p.getWaitlist();
+        if (items == null) return null;
+        List<WaitlistView> views = new ArrayList<>();
+        for (WaitlistItem item : items)
+        {
+            Client c = clientList.searchForClient(item.getClientID());
+            if (c == null) continue;
+            views.add(new WaitlistView(item.getClientID(), productID, item.getQuantity(),
+                                    p.getName(), p.getPrice(), p.getStock()));
+        }
+        return views;
     }
 
-    /**
-     * Returns the clients waiting for a product, in the order they joined.
-     *
-     * @param productID the id of the product
-     * @return a copy of the product's waitlist (see {@link Product#getWaitlist()}),
-     *         or {@code null} if the product is unknown
-     */
     public List<WaitlistItem> getProductWaitlist(String productID)
     {
         Product p = catalog.searchForProduct(productID);
         return (p == null) ? null : p.getWaitlist();
     }
 
-    /**
-     * Prints each client waiting for a product and the quantity they are waiting
-     * for, or a message if the product is unknown or nobody is waiting.
-     *
-     * @param productID the id of the product
-     */
     public void printProductWaitlist(String productID)
     {
         List<WaitlistItem> wl = getProductWaitlist(productID);
@@ -232,12 +183,6 @@ public class Warehouse
         return (c == null) ? null : c.getTransactions();
     }
 
-    /**
-     * Prints a client's transactions, one per line, or a message if the client
-     * is unknown or has no transactions.
-     *
-     * @param clientID the id of the client
-     */
     public void printClientTransactions(String clientID)
     {
         List<Transaction> ts = getClientTransactions(clientID);
@@ -342,14 +287,10 @@ public class Warehouse
      * product's waitlist in the order clients joined it. Each client served is
      * charged for the units they receive with an {@code "ORDER"} transaction; a
      * client whose request is only partly filled has their waiting quantity
-     * reduced and keeps their place in line. Once the waitlist has been served or
-     * the shipment runs out, any remaining units are added to stock. Lines for
-     * unknown products are reported and skipped.</p>
-     *
-     * <p><b>Known issue:</b> fully served clients are meant to be removed from the
-     * waitlist, but the removal is applied to the copy returned by
-     * {@link Product#getWaitlist()}, so they currently remain on the product's
-     * waitlist.</p>
+     * reduced and keeps their place in line. Fully served clients are removed from
+     * the waitlist. Once the waitlist has been served or the shipment runs out,
+     * any remaining units are added to stock. Lines for unknown products are
+     * reported and skipped.</p>
      *
      * @param shipmentLines the products and quantities received
      * @return a report of which clients were filled and how stock changed
@@ -376,7 +317,7 @@ public class Warehouse
                 if (remaining <= 0) break; // shipment exhausted, rest stay waiting
 
                 int wanted = entry.getQuantity();
-                int filled = Math.min(wanted, remaining);         
+                int filled = Math.min(wanted, remaining);
                 remaining -= filled;
 
                 // Waiting client for what we just filled.
@@ -391,10 +332,10 @@ public class Warehouse
                 if (filled >= wanted) satisfied.add(entry); // fully fulfilled -> remove
                 else entry.setQuantity(wanted - filled); // partially fulfilled -> reduce, stays waiting
             }
-        p.getWaitlist().removeAll(satisfied); // apply removals after iterating
-        p.setStock(p.getStock() + remaining);   
-        report.append("Added ").append(remaining).append(" to stock of ")
-      .append(p.getName()).append(". New stock: ").append(p.getStock()).append("\n"); // leftover after waitlist -> stock
+            p.removeWaitlistEntries(satisfied); // apply removals after iterating
+            p.setStock(p.getStock() + remaining);
+            report.append("Added ").append(remaining).append(" to stock of ")
+                  .append(p.getName()).append(". New stock: ").append(p.getStock()).append("\n"); // leftover after waitlist -> stock
         }
         return report.toString();
     }

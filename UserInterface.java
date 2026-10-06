@@ -11,10 +11,7 @@ import java.util.ArrayList;
  */
 public class UserInterface 
 {
-    /** Warehouse instance that stores the system data. */
-    private final Warehouse warehouse = new Warehouse();
-
-    /** Console input source used by the text menu. */
+    private final Warehouse warehouse = Warehouse.getInstance();
     private final Scanner in = new Scanner(System.in);
 
     /**
@@ -28,7 +25,9 @@ public class UserInterface
         while (true) 
         {
             System.out.println("\n1) Add client  2) Add product  3) Add to wishlist  "
-                    + "4) Print clients  5) Print products  6) Print wishlist  0) Exit");
+                + "4) Print clients  5) Print products  6) Print wishlist  7) Process client order  "
+                + "8) Receive shipment  9) Receive payment  10) Print product waitlist  "
+                + "11) Print client transactions  0) Exit");
             System.out.print("Choose: ");
             String choice = in.nextLine().trim();
             switch (choice) 
@@ -36,12 +35,14 @@ public class UserInterface
                 case "1": addClient(); break;
                 case "2": addProduct(); break;
                 case "3": addToWishlist(); break;
-                case "4": warehouse.printAllClients(); break;
-                case "5": warehouse.printAllProducts(); break;
+                case "4": printAllClients(); break;
+                case "5": printAllProducts(); break;
                 case "6": printClientWishlist(); break;
                 case "7": processClientOrder(); break;
                 case "8": receiveShipment(); break;
                 case "9": receivePayment(); break;
+                case "10": printProductWaitlist(); break;
+                case "11": printClientTransactions(); break;
                 case "0": return;
                 default:  System.out.println("Invalid option.");
             }
@@ -83,20 +84,6 @@ public class UserInterface
         System.out.println(ok ? "Product added to wishlist." : "Error: client or product not found.");
     }
 
-    /**
-     * Displays the wishlist for a specific client.
-     */
-    public void printClientWishlist() 
-    {
-        System.out.print("Enter client ID: "); String clientID = in.nextLine();
-        warehouse.printClientWishlist(clientID);
-    }
-
-    /**
-     * Launches the user interface.
-     *
-     * @param args command-line arguments; not used by the program
-     */
     public static void main(String[] args) 
     {
         new UserInterface().run();
@@ -131,7 +118,16 @@ public class UserInterface
             if (!order) continue;
 
             System.out.print("Enter quantity: ");
-            int qty = Integer.parseInt(in.nextLine().trim());
+            int qty;
+            try
+            {
+                qty = Integer.parseInt(in.nextLine().trim());
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("  Not a number — line skipped.");
+                continue;
+            }
             lines.add(new OrderLine(w.getProductID(), qty));
         }
         String summary = warehouse.createOrder(clientID, lines);
@@ -203,5 +199,58 @@ public class UserInterface
         }
 
         System.out.println(warehouse.receivePayment(clientID, amount));
+    }
+
+    public void printAllClients()
+    {
+        List<Client> all = warehouse.getAllClients();
+        if (all.isEmpty()) { System.out.println("No clients available."); return; }
+        for (Client c : all)
+            System.out.printf("ID=%s, Name=%s, Address=%s, Balance=$%.2f%n",
+                    c.getID(), c.getName(), c.getAddress(), c.getBalance());    
+    }
+
+    public void printAllProducts()
+    {
+        List<Product> all = warehouse.getAllProducts();
+        if (all.isEmpty()) { System.out.println("No products available."); return; }
+        for (Product p : all)
+            System.out.printf("ID=%s, Name=%s, Price=$%.2f, Stock=%d%n",
+                    p.getID(), p.getName(), p.getPrice(), p.getStock());
+    }
+
+    public void printClientTransactions()
+    {
+        System.out.print("Enter client ID: ");
+        String clientID = in.nextLine().trim();
+        List<Transaction> ts = warehouse.getClientTransactions(clientID);
+        if (ts == null)   { System.out.println("Client not found."); return; }
+        if (ts.isEmpty()) { System.out.println("No transactions."); return; }
+        for (Transaction t : ts) System.out.println(t);
+    }
+
+    public void printClientWishlist()
+    {
+        System.out.print("Enter client ID: ");
+        String clientID = in.nextLine().trim();
+        List<WishlistView> wishlist = warehouse.getClientWishlistView(clientID);
+        if (wishlist == null) { System.out.println("Client not found."); return; }
+        for (WishlistView v : wishlist)
+            System.out.printf("Product=%s, Name=%s, Price=$%.2f, WishQty=%d, Stock=%d%n",
+                v.getProductID(), v.getProductName(), v.getPrice(), v.getWishlistQuantity(), v.getStock());
+    }
+
+    public void printProductWaitlist()
+    {
+        System.out.print("Enter product ID: ");
+        String productID = in.nextLine().trim();
+        List<WaitlistView> waitlist = warehouse.getProductWaitlistView(productID);
+        if (waitlist == null) { System.out.println("Product not found."); return; }
+        for (WaitlistView item : waitlist) 
+        {
+            System.out.printf("Client=%s, Name=%s, Price=$%.2f, WaitQty=%d, Stock=%d%n",
+            item.getClientID(), item.getProductName(), item.getPrice(),
+            item.getWaitingQuantity(), item.getStock());
+        }
     }
 }

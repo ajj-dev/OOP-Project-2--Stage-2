@@ -71,6 +71,7 @@ public class WaitlistItem
      *
      * @return a string describing the waiting client and quantity
      */
+    @Override
     public String toString()
     {
         return "Client=" + clientID + ", WaitingQty=" + quantity;
