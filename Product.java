@@ -175,7 +175,11 @@ public class Product
         waitlist.add(new WaitlistItem(clientID, quantity));
         return true;
     }
-
+    /**
+     * Removes the specified entries from the waitlist.
+     *
+     * @param entries the entries to remove
+     */
     public void removeWaitlistEntries(List<WaitlistItem> entries)
     {
         waitlist.removeAll(entries);

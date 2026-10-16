@@ -1,5 +1,5 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The facade and single entry point of the warehouse system.
@@ -97,17 +97,27 @@ public class Warehouse
             return false;   // validate product
         return clientList.addClientWishlistEntry(clientID, productID, quantity);
     }
-
+    /**
+     * Returns a list of all clients.
+     * @return a list of all clients
+     */
     public List<Client> getAllClients()
     {
         return clientList.getAllClients();
     }
-
+    /**
+     * Returns a list of all products.
+     * @return a list of all products
+     */
     public List<Product> getAllProducts()
     {
         return catalog.getAllProducts();
     }
-
+    /**
+     * Returns a list of wishlist views for a client.
+     * @param clientID the id of the client
+     * @return a list of wishlist views for the client
+     */
     public List<WishlistView> getClientWishlistView(String clientID)
     {
         List<WishlistItem> items = clientList.getClientWishlist(clientID);
@@ -121,7 +131,11 @@ public class Warehouse
         }
         return views;
     }
-
+    /**
+     * Returns a list of waitlist views for a product.
+     * @param productID the id of the product
+     * @return a list of waitlist views for the product
+     */
     public List<WaitlistView> getProductWaitlistView(String productID)
     {
         Product p = catalog.searchForProduct(productID);
@@ -138,13 +152,20 @@ public class Warehouse
         }
         return views;
     }
-
+    /**
+     * Returns the waitlist for a product.
+     * @param productID the id of the product
+     * @return the waitlist for the product
+     */
     public List<WaitlistItem> getProductWaitlist(String productID)
     {
         Product p = catalog.searchForProduct(productID);
         return (p == null) ? null : p.getWaitlist();
     }
-
+    /**
+     * Prints the waitlist for a product.
+     * @param productID the id of the product
+     */
     public void printProductWaitlist(String productID)
     {
         List<WaitlistItem> wl = getProductWaitlist(productID);
@@ -182,7 +203,10 @@ public class Warehouse
         Client c = clientList.searchForClient(clientID);
         return (c == null) ? null : c.getTransactions();
     }
-
+    /**
+     * Prints the transaction history for a client.
+     * @param clientID the id of the client
+     */
     public void printClientTransactions(String clientID)
     {
         List<Transaction> ts = getClientTransactions(clientID);

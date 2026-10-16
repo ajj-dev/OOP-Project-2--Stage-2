@@ -1,0 +1,403 @@
+Script started on 2026-10-16 01:50:17-05:00 [TERM="xterm-256color" TTY="/dev/cons1" COLUMNS="125" LINES="18"]
+[?2004h]0;/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/Project 1 - Class Design
+[32mPcNub@DESKTOP-N1DVLGT [33m/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/Project 1 - Class Design[0m
+$ [7m"/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/JDK-2/oracleJdk-27/bin/javac.exe" *.java[27m[C[C"/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/JDK-2/oracleJdk-27/bin/javac.exe" *.java
+[?2004l[6n[6n[?9001h[?1004h[m[?25h[?9001l[?1004l[?2004h]0;/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/Project 1 - Class Design
+[32mPcNub@DESKTOP-N1DVLGT [33m/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/Project 1 - Class Design[0m
+$ [7m"/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/JDK-2/oracleJdk-27/bin/java.exe" -cp . UserInt[27m[7me[27m[7mrface[27m[A[C[C"/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/JDK-2/oracleJdk-27/bin/java.exe" -cp . UserInterface
+[?2004l[6n[?9001h[?1004h[m[?25h
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose: 1
+Enter name: C1
+Enter address: Addr1
+Client added: ID=C1001, Name=C1, Address=Addr1
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C1
+Enter name: C2
+Enter address: Addr2
+Client added: ID=C1002, Name=C2, Address=Addr2
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C1
+Enter name: C3
+Enter address: Addr3
+Client added: ID=C1003, Name=C3, Address=Addr3
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C1
+Enter name: C4
+Enter address: Addr4
+Client added: ID=C1004, Name=C4, Address=Addr4
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C1
+Enter name: C5
+Enter address: Addr5
+Client added: ID=C1005, Name=C5, Address=Addr5
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C4
+ID=C1001, Name=C1, Address=Addr1, Balance=$0.00
+ID=C1002, Name=C2, Address=Addr2, Balance=$0.00
+ID=C1003, Name=C3, Address=Addr3, Balance=$0.00
+ID=C1004, Name=C4, Address=Addr4, Balance=$0.00
+ID=C1005, Name=C5, Address=Addr5, Balance=$0.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C2
+Enter name: P1
+Enter price: 1
+Enter stock: 10
+Product added: ID=P2001
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C2
+Enter name: P2
+Enter price: 2
+Enter stock: 20
+Product added: ID=P2002
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C2
+Enter name: P3
+Enter price: 3
+Enter stock: 30
+Product added: ID=P2003
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C2
+Enter name: P4
+Enter price: 4
+Enter stock: 40
+Product added: ID=P2004
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C2
+Enter name: P5
+Enter price: 5
+Enter stock: 50
+Product added: ID=P2005
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C5
+ID=P2001, Name=P1, Price=$1.00, Stock=10
+ID=P2002, Name=P2, Price=$2.00, Stock=20
+ID=P2003, Name=P3, Price=$3.00, Stock=30
+ID=P2004, Name=P4, Price=$4.00, Stock=40
+ID=P2005, Name=P5, Price=$5.00, Stock=50
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1001
+Enter product ID: P2001
+Enter quantity: 5
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1001
+Enter product ID: P2003
+Enter quantity: 5
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1001
+Enter product ID: P2005
+Enter quantity: 5
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C6
+Enter client ID: C1001
+Product=P2001, Name=P1, Price=$1.00, WishQty=5, Stock=10
+Product=P2003, Name=P3, Price=$3.00, WishQty=5, Stock=30
+Product=P2005, Name=P5, Price=$5.00, WishQty=5, Stock=50
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1002
+Enter product ID: P2001
+Enter quantity: 7
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1002
+Enter product ID: P2002
+Enter quantity: 7
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1002
+Enter product ID: P2004
+Enter quantity: 7
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C6
+Enter client ID: C1002
+Product=P2001, Name=P1, Price=$1.00, WishQty=7, Stock=10
+Product=P2002, Name=P2, Price=$2.00, WishQty=7, Stock=20
+Product=P2004, Name=P4, Price=$4.00, WishQty=7, Stock=40
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1003
+Enter product ID: P2001
+Enter quantity: 6
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1CC 3
+Enter client ID: C1003
+Enter product ID: P2002
+Enter quantity: 6
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C3
+Enter client ID: C1003
+Enter product ID: P2005
+Enter quantity: 6
+Product added to wishlist.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C6
+Enter client ID: C1003
+Product=P2001, Name=P1, Price=$1.00, WishQty=6, Stock=10
+Product=P2002, Name=P2, Price=$2.00, WishQty=6, Stock=20
+Product=P2005, Name=P5, Price=$5.00, WishQty=6, Stock=50
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C7
+Enter client ID: C1002
+Product P2001, qty 7
+Order this item? (y/n):[1Cy
+Enter quantity: 7
+Product P2002, qty 7
+Order this item? (y/n):[1Cy
+Enter quantity: 7
+Product P2004, qty 7
+Order this item? (y/n):[1Cy
+Enter quantity: 7
+Filled 7 x P1
+Filled 7 x P2
+Filled 7 x P4
+Total debited: $49.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C4
+ID=C1001, Name=C1, Address=Addr1, Balance=$0.00
+ID=C1002, Name=C2, Address=Addr2, Balance=$-49.00
+ID=C1003, Name=C3, Address=Addr3, Balance=$0.00
+ID=C1004, Name=C4, Address=Addr4, Balance=$0.00
+ID=C1005, Name=C5, Address=Addr5, Balance=$0.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C7
+Enter client ID: C1003
+Product P2001, qty 6
+Order this item? (y/n):[1Cy
+Enter quantity: 6
+Product P2002, qty 6
+Order this item? (y/n):[1Cy
+Enter quantity: 6
+Product P2005, qty 6
+Order this item? (y/n):[1Cy
+Enter quantity: 6
+Filled 3 x P1
+Waitlisted 3 x P1
+Filled 6 x P2
+Filled 6 x P5
+Total debited: $45.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C4
+ID=C1001, Name=C1, Address=Addr1, Balance=$0.00
+ID=C1002, Name=C2, Address=Addr2, Balance=$-49.00
+ID=C1003, Name=C3, Address=Addr3, Balance=$-45.00
+ID=C1004, Name=C4, Address=Addr4, Balance=$0.00
+ID=C1005, Name=C5, Address=Addr5, Balance=$0.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C6
+Enter client ID: C1002
+Wishlist is empty.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C6
+Enter client ID: C1003
+Wishlist is empty.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C10
+Enter product ID: P2001
+Client=C1003, Name=P1, Price=$1.00, WaitQty=3, Stock=0
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C10
+Enter product ID: P2002
+Waitlist is empty.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C7
+Enter client ID: C1001
+Product P2001, qty 5
+Order this item? (y/n):[1Cy
+Enter quantity: 5
+Product P2003, qty 5
+Order this item? (y/n):[1Cy
+Enter quantity: 5
+Product P2005, qty 5
+Order this item? (y/n):[1Cy
+Enter quantity: 5
+Waitlisted 5 x P1
+Filled 5 x P3
+Filled 5 x P5
+Total debited: $40.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C4
+ID=C1001, Name=C1, Address=Addr1, Balance=$-40.00
+ID=C1002, Name=C2, Address=Addr2, Balance=$-49.00
+ID=C1003, Name=C3, Address=Addr3, Balance=$-45.00
+ID=C1004, Name=C4, Address=Addr4, Balance=$0.00
+ID=C1005, Name=C5, Address=Addr5, Balance=$0.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C6
+Enter client ID: C1001
+Wishlist is empty.
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C9
+Enter client ID: C1001
+Enter payment amount: 100
+Payment of $100.00 recorded for C1. New balance: $60.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C9
+Enter client ID: C1002
+Enter payment amount: 100
+Payment of $100.00 recorded for C2. New balance: $51.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C8
+Enter shipment lines. Blank product ID when done.
+Product ID (blank to finish):[1CP2001
+Quantity received: 100
+Product ID (blank to finish): 
+Filled 3 for C1003
+Filled 5 for C1001
+Added 92 to stock of P1. New stock: 92
+
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C5
+ID=P2001, Name=P1, Price=$1.00, Stock=92
+ID=P2002, Name=P2, Price=$2.00, Stock=7
+ID=P2003, Name=P3, Price=$3.00, Stock=25
+ID=P2004, Name=P4, Price=$4.00, Stock=33
+ID=P2005, Name=P5, Price=$5.00, Stock=39
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C4
+ID=C1001, Name=C1, Address=Addr1, Balance=$55.00
+ID=C1002, Name=C2, Address=Addr2, Balance=$51.00
+ID=C1003, Name=C3, Address=Addr3, Balance=$-48.00
+ID=C1004, Name=C4, Address=Addr4, Balance=$0.00
+ID=C1005, Name=C5, Address=Addr5, Balance=$0.00
+
+1) Add client  2) Add product  3) Add to wishlist  4) Print clients  5) Print products  6) Print wishlist  7) Process client 
+[17;125H order  8) Receive shipment  9) Receive payment  10) Print product waitlist  11) Print client transactions  12) Print client i
+[17;125Hinvoices  0) Exit
+Choose:[1C0
+[?9001l[?1004l[?2004h]0;/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/Project 1 - Class Design
+[32mPcNub@DESKTOP-N1DVLGT [33m/cygdrive/c/Users/PcNub/OneDrive/Documents/College/Object_Oriented_Software/Project 1 - Class Design[0m
+$ exit
+[?2004lexit
+
+Script done on 2026-10-16 02:01:04-05:00 [COMMAND_EXIT_CODE="0"]

@@ -1,6 +1,6 @@
-import java.util.Scanner;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Console-based menu for interacting with the warehouse system.
@@ -27,10 +27,10 @@ public class UserInterface
             System.out.println("\n1) Add client  2) Add product  3) Add to wishlist  "
                 + "4) Print clients  5) Print products  6) Print wishlist  7) Process client order  "
                 + "8) Receive shipment  9) Receive payment  10) Print product waitlist  "
-                + "11) Print client transactions  0) Exit");
+                + "11) Print client transactions  12) Print client invoices  0) Exit");
             System.out.print("Choose: ");
             String choice = in.nextLine().trim();
-            switch (choice) 
+            switch (choice)
             {
                 case "1": addClient(); break;
                 case "2": addProduct(); break;
@@ -43,6 +43,7 @@ public class UserInterface
                 case "9": receivePayment(); break;
                 case "10": printProductWaitlist(); break;
                 case "11": printClientTransactions(); break;
+                case "12": printClientInvoices(); break;
                 case "0": return;
                 default:  System.out.println("Invalid option.");
             }
@@ -200,7 +201,9 @@ public class UserInterface
 
         System.out.println(warehouse.receivePayment(clientID, amount));
     }
-
+    /**
+     * Prints information about all clients.
+     */
     public void printAllClients()
     {
         List<Client> all = warehouse.getAllClients();
@@ -209,7 +212,9 @@ public class UserInterface
             System.out.printf("ID=%s, Name=%s, Address=%s, Balance=$%.2f%n",
                     c.getID(), c.getName(), c.getAddress(), c.getBalance());    
     }
-
+    /**
+     * Prints all products in the warehouse.
+     */
     public void printAllProducts()
     {
         List<Product> all = warehouse.getAllProducts();
@@ -218,7 +223,9 @@ public class UserInterface
             System.out.printf("ID=%s, Name=%s, Price=$%.2f, Stock=%d%n",
                     p.getID(), p.getName(), p.getPrice(), p.getStock());
     }
-
+    /**
+     * Prints a client's transactions.
+     */
     public void printClientTransactions()
     {
         System.out.print("Enter client ID: ");
@@ -228,29 +235,58 @@ public class UserInterface
         if (ts.isEmpty()) { System.out.println("No transactions."); return; }
         for (Transaction t : ts) System.out.println(t);
     }
-
+    /**
+     * Prints a client's wishlist.
+     */
     public void printClientWishlist()
     {
         System.out.print("Enter client ID: ");
         String clientID = in.nextLine().trim();
         List<WishlistView> wishlist = warehouse.getClientWishlistView(clientID);
         if (wishlist == null) { System.out.println("Client not found."); return; }
+        if (wishlist.isEmpty()) { System.out.println("Wishlist is empty."); return; }
         for (WishlistView v : wishlist)
             System.out.printf("Product=%s, Name=%s, Price=$%.2f, WishQty=%d, Stock=%d%n",
                 v.getProductID(), v.getProductName(), v.getPrice(), v.getWishlistQuantity(), v.getStock());
     }
 
+    /**
+     * Prints the waitlist for a specific product.
+     */
     public void printProductWaitlist()
     {
         System.out.print("Enter product ID: ");
         String productID = in.nextLine().trim();
         List<WaitlistView> waitlist = warehouse.getProductWaitlistView(productID);
         if (waitlist == null) { System.out.println("Product not found."); return; }
-        for (WaitlistView item : waitlist) 
+        if (waitlist.isEmpty()) { System.out.println("Waitlist is empty."); return; }
+        for (WaitlistView item : waitlist)
         {
             System.out.printf("Client=%s, Name=%s, Price=$%.2f, WaitQty=%d, Stock=%d%n",
             item.getClientID(), item.getProductName(), item.getPrice(),
             item.getWaitingQuantity(), item.getStock());
         }
+    }
+
+    /**
+     * Prints a client's invoices: the ORDER-type charges on the account
+     * (order charges and waitlist-fill charges), excluding payments.
+     */
+    public void printClientInvoices()
+    {
+        System.out.print("Enter client ID: ");
+        String clientID = in.nextLine().trim();
+        List<Transaction> ts = warehouse.getClientTransactions(clientID);
+        if (ts == null) { System.out.println("Client not found."); return; }
+        boolean any = false;
+        for (Transaction t : ts)
+        {
+            if (t.getType().equals("ORDER"))
+            {
+                System.out.printf("Invoice: %s - $%.2f%n", t.getDescription(), -t.getAmount());
+                any = true;
+            }
+        }
+        if (!any) System.out.println("No invoices.");
     }
 }
