@@ -162,18 +162,7 @@ public class Warehouse
         Product p = catalog.searchForProduct(productID);
         return (p == null) ? null : p.getWaitlist();
     }
-    /**
-     * Prints the waitlist for a product.
-     * @param productID the id of the product
-     */
-    public void printProductWaitlist(String productID)
-    {
-        List<WaitlistItem> wl = getProductWaitlist(productID);
-        if (wl == null)      { System.out.println("Product not found."); return; }
-        if (wl.isEmpty())    { System.out.println("Waitlist is empty."); return; }
-        for (WaitlistItem w : wl)
-            System.out.println("Client=" + w.getClientID() + ", WaitingQty=" + w.getQuantity());
-    }
+    
 
     /**
      * Records a transaction on a client's account.
@@ -383,5 +372,54 @@ public class Warehouse
         c.addTransaction(new Transaction("PAYMENT", "Payment received", amount)); // positive == credit
         return String.format("Payment of $%.2f recorded for %s. New balance: $%.2f",
                 amount, c.getName(), c.getBalance());
+    }
+
+    public Client getClient(String clientID) {
+        return clientList.searchForClient(clientID);
+    }
+
+    public List<ProductView> getProductListView(int userType) 
+    {
+        switch (userType) 
+        {
+            case 0 -> getProductListViewForCustomer();// Customer
+                 
+            case 1 -> getProductListViewForClerk();// Clerk
+                 
+            case 2 -> getProductListViewForManager();// Manager
+            
+            default -> throw new IllegalArgumentException("Invalid user type: " + userType); 
+        }
+        return null; // This line will never be reached due to the exception thrown for invalid user types
+    }
+
+    private List<ProductView> getProductListViewForCustomer() 
+    {
+        List<ProductView> views = new ArrayList<>();
+        for (Product p : catalog.getAllProducts()) 
+        {
+            views.add(new ProductView(p.getID(), p.getName(), p.getPrice()));
+        }
+        return views;
+    }
+
+    private List<ProductView> getProductListViewForClerk() 
+    {
+        List<ProductView> views = new ArrayList<>();
+        for (Product p : catalog.getAllProducts()) 
+        {
+            views.add(new ProductView(p.getID(), p.getName(), p.getPrice(), p.getStock()));
+        }
+        return views;
+    }
+
+    private List<ProductView> getProductListViewForManager() 
+    {
+        List<ProductView> views = new ArrayList<>();
+        for (Product p : catalog.getAllProducts()) 
+        {
+            views.add(new ProductView(p.getID(), p.getName(), p.getPrice(), p.getStock(), p.getWaitlist()));
+        }
+        return views;
     }
 }
