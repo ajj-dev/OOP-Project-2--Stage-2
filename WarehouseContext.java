@@ -2,22 +2,6 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
 
-/**
- * Matrix-based FSM controller, following the LibContext example.
- *
- * <p>The transition matrix {@link #nextState} is the centralized FSM: columns are
- * transition EVENTS, and nextState[current][event] gives the next state code, or
- * -1 to terminate, or -2 for an invalid transition. {@link #changeState(int)}
- * drives it (and calls run() on the new state, as LibContext does; the program
- * ends via System.exit in {@link #terminate()}, so the recursion never unwinds).</p>
- *
- * <p>The matrix cannot express "logout returns to whoever I came from," because a
- * static cell has no memory of the path. LibContext solves its one-level case with
- * a single remembered login type. This system can nest two levels
- * (manager -> clerk -> client), so the remembered origin is a {@link #returnStack}:
- * each "become" pushes the caller, each logout pops it to choose the return edge.
- * The matrix still routes the transition; the stack only chooses which column.</p>
- */
 public class WarehouseContext
 {
     // state codes
@@ -117,8 +101,6 @@ public class WarehouseContext
         System.out.println("Goodbye.");
         System.exit(0);
     }
-
-    // ---- queries + start ----
 
     public String getUser() { return userID; }
     public int getActingRole() { return currentState; }

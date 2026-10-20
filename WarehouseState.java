@@ -1,14 +1,5 @@
 import java.util.Scanner;
 
-/**
- * Base class for every menu state in the text FSM.
- *
- * <p>Holds the shared singleton context and a shared input reader, and provides
- * the reusable token/number/yes-no input helpers (re-prompt on bad input rather
- * than crashing). Each concrete state implements {@link #run()} as its own menu
- * loop; run() returns when the user picks a command that leaves the state, at
- * which point the context's driver loop advances to the next state.</p>
- */
 public abstract class WarehouseState
 {
     protected static final WarehouseContext context = WarehouseContext.getInstance();
