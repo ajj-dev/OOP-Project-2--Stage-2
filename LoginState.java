@@ -1,64 +1,77 @@
-public class LoginState extends WarehouseState 
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class LoginState extends WarehouseState
 {
     private static LoginState instance;
     private final Warehouse warehouse = Warehouse.getInstance();
 
-    private static final int QUIT = 0;
-    private static final int LOGIN_CLIENT = 1;
-    private static final int LOGIN_CLERK = 2;
-    private static final int LOGIN_MANAGER = 3;
-    private static final int HELP = 4;
+    private LoginState() { super(); }
 
-    private LoginState() {
-        super();
-    }
-
-    public static LoginState getInstance() {
-        if (instance == null) {
-            instance = new LoginState();
-        }
+    public static LoginState getInstance()
+    {
+        if (instance == null) instance = new LoginState();
         return instance;
     }
 
+    /** Build the login screen on the shared window. Event-driven: no loop. */
     @Override
-    public void run() {
-        boolean active = true;
-        while(active)
+    public void run()
+    {
+        JFrame frame = prepareFrame();
+        frame.setTitle("Warehouse - Login");
+        JPanel buttonsPanel = new JPanel(new FlowLayout());
+
+        buttonsPanel.add(new ClientLoginButton());
+        buttonsPanel.add(new ClerkLoginButton());
+        buttonsPanel.add(new ManagerLoginButton());
+        buttonsPanel.add(new QuitButton());
+
+        frame.getContentPane().add(buttonsPanel, BorderLayout.NORTH);
+
+        showFrame(frame);
+    }
+
+    private void loginClient()
+    {
+        String id = JOptionPane.showInputDialog(context.getFrame(), "Enter client ID:");
+        if (id == null) return;                 // user cancelled the dialog
+        id = id.trim();
+        if (warehouse.getClient(id) == null)
         {
-            int command = getCommand("Login Menu:\n" +
-                    "1. Login as Client\n" +
-                    "2. Login as Clerk\n" +
-                    "3. Login as Manager\n" +
-                    "4. Help\n" +
-                    "0. Quit\n" +
-                    "Enter command: ");
-
-            switch (command) {
-                case LOGIN_CLIENT -> { if (loginClient()) active = false; }
-                case LOGIN_CLERK -> { context.login(WarehouseContext.CLERK, null); active = false; }
-                case LOGIN_MANAGER -> { context.login(WarehouseContext.MANAGER, null); active = false; }
-                case HELP -> help();
-                case QUIT -> { context.terminate(); active = false; }
-                default -> System.out.println("Invalid command. Please try again.");
-            }
+            JOptionPane.showMessageDialog(context.getFrame(), "Client not found.");
+            return;                             // stay on the login screen
         }
+        context.login(WarehouseContext.CLIENT, id);
     }
 
-    private boolean loginClient(){
-        String userID = getToken("Enter Client ID: ");
-        if (warehouse.getClient(userID) == null) {
-            System.out.println("Client ID not found.");
-            return false;
-        }
-        context.login(context.CLIENT, userID);
-        return true;
+    private void loginClerk()   { context.login(WarehouseContext.CLERK, null); }
+    private void loginManager() { context.login(WarehouseContext.MANAGER, null); }
+    private void quit()         { context.changeState(WarehouseContext.TERMINATE); }
+
+    private class ClientLoginButton extends JButton implements ActionListener
+    {
+        ClientLoginButton() { super("Login as Client"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { loginClient(); }
     }
 
-    public void help() {
-        System.out.println("Login State Help:");
-        System.out.println("1. Login as Client");
-        System.out.println("2. Login as Clerk");
-        System.out.println("3. Login as Manager");
-        System.out.println("0. Quit");
+    private class ClerkLoginButton extends JButton implements ActionListener
+    {
+        ClerkLoginButton() { super("Login as Clerk"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { loginClerk(); }
+    }
+
+    private class ManagerLoginButton extends JButton implements ActionListener
+    {
+        ManagerLoginButton() { super("Login as Manager"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { loginManager(); }
+    }
+
+   
+    private class QuitButton extends JButton implements ActionListener
+    {
+        QuitButton() { super("Quit"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { quit(); }
     }
 }

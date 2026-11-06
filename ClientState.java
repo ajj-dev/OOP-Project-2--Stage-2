@@ -1,177 +1,134 @@
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
 
-public class ClientState extends WarehouseState 
+public class ClientState extends WarehouseState
 {
     private static ClientState instance;
     private final Warehouse warehouse = Warehouse.getInstance();
 
-    private static final int LOGOUT = 0;
-    private static final int CLIENT_DETAILS = 1;
-    private static final int SHOW_PRODUCT_LIST = 2;
-    private static final int SHOW_CLIENT_TRANSACTIONS = 3;
-    private static final int ADD_TO_WISHLIST = 4;
-    private static final int DISPLAY_CLIENT_WISHLIST = 5;
-    private static final int PLACE_ORDER = 6;
-    private static final int HELP = 7;
+    private ClientState() { super(); }
 
-    private ClientState() {
-        super();
-    }
-
-    public static ClientState getInstance() {
-        if (instance == null) {
-            instance = new ClientState();
-        }
+    public static ClientState getInstance()
+    {
+        if (instance == null) instance = new ClientState();
         return instance;
     }
 
-    public void help() {
-        System.out.println("Client State Help:");
-        System.out.println("1. View Client Details");
-        System.out.println("2. Show Product List");
-        System.out.println("3. Show Client Transactions");
-        System.out.println("4. Add to Wishlist");
-        System.out.println("5. Display Client Wishlist");
-        System.out.println("6. Place Order");
-        System.out.println("0. Exit");
-    }
-
-    public void getClientDetails()
+    @Override
+    public void run()
     {
-        String userID = context.getUser();
-        Client client = warehouse.getClient(userID);
-        if (client != null) {
-            System.out.println("Client ID: " + client.getID());
-            System.out.println("Name: " + client.getName());
-            System.out.println("Address: " + client.getAddress());
-        } else {
-            System.out.println("Client not found.");
-        }
+        JFrame frame = prepareFrame();
+        frame.setTitle("Warehouse - Client " + context.getUser());
+        frame.getContentPane().setLayout(new BorderLayout());   // buttons on top, output below
+
+        JPanel buttons = new JPanel(new FlowLayout());
+        buttons.add(new DetailsButton());
+        buttons.add(new ProductsButton());
+        buttons.add(new TransactionsButton());
+        buttons.add(new AddWishlistButton());
+        buttons.add(new ShowWishlistButton());
+        buttons.add(new PlaceOrderButton());
+        buttons.add(new LogoutButton());
+
+        output.setEditable(false);
+        frame.getContentPane().add(buttons, BorderLayout.NORTH);
+        frame.getContentPane().add(new JScrollPane(output), BorderLayout.CENTER);
+        showFrame(frame);
     }
 
-    public void showProductList() {
-        List<ProductView> productViews = warehouse.getProductListView(context.CLIENT);
-        for (ProductView pv : productViews) {
-            System.out.println(pv.clientString());
-        }
-    }
-
-    public void showClientTransactions() {
-        String userID = context.getUser();
-        Client client = warehouse.getClient(userID);
-        if (client != null) {
-            List<Transaction> transactions = client.getTransactions();
-            if (transactions.isEmpty()) {
-                System.out.println("No transactions found for this client.");
-            } else {
-                for (Transaction t : transactions) {
-                    System.out.println(t);
-                }
-            }
-        } else {
-            System.out.println("Client not found.");
-        }
-    }
-
-    public void addItemToWishlist() 
+    private void showClientDetails()
     {
-        String userID = context.getUser();
-        System.out.print("Enter product ID: "); String productID = in.nextLine();
-        System.out.print("Enter quantity: ");   int qty = Integer.parseInt(in.nextLine());
-        boolean ok = warehouse.addToWishlist(userID, productID, qty);
-        System.out.println(ok ? "Product added to wishlist." : "Error: client or product not found.");
+        Client client = warehouse.getClient(context.getUser());
+        if (client == null) { display("Client not found."); return; }
+        display("Client ID: " + client.getID()
+              + "\nName: "    + client.getName()
+              + "\nAddress: " + client.getAddress());
     }
 
-    public void displayClientWishlist() {
-        String userID = context.getUser();
-        Client client = warehouse.getClient(userID);
-        if (client != null) {
-            List<WishlistItem> wishlist = client.getWishListItems();
-            if (wishlist.isEmpty()) {
-                System.out.println("Wishlist is empty.");
-            } else {
-                for (WishlistItem item : wishlist) {
-                    System.out.println(item);
-                }
-            }
-        } else {
-            System.out.println("Client not found.");
-        }
+    private void showProductList()
+    {
+        List<ProductView> views = warehouse.getProductListView(WarehouseContext.CLIENT);
+        if (views.isEmpty()) { display("No products available."); return; }
+        StringBuilder sb = new StringBuilder("Products:\n");
+        for (ProductView pv : views) sb.append(pv.clientString()).append("\n");
+        display(sb.toString());
     }
 
-    public void placeOrder() {
-        String userID = context.getUser();
-        List<WishlistItem> wishlist = warehouse.getClientWishlist(userID);
-        if (wishlist == null) 
-        {
-            System.out.println("Client not found.");
-            return;
-        }
-        if (wishlist.isEmpty()) 
-        {
-            System.out.println("Wishlist is empty.");
-            return;
-        }
+    private void showClientTransactions()
+    {
+        Client client = warehouse.getClient(context.getUser());
+        if (client == null) { display("Client not found."); return; }
+        List<Transaction> ts = client.getTransactions();
+        if (ts.isEmpty()) { display("No transactions found for this client."); return; }
+        StringBuilder sb = new StringBuilder("Transactions:\n");
+        for (Transaction t : ts) sb.append(t).append("\n");
+        display(sb.toString());
+    }
+
+    private void addItemToWishlist() {
+        String productID = promptRequired("Enter product ID:");
+        if (productID == null) return;                 // cancelled
+        Integer qty = promptInt("Enter quantity:");
+        if (qty == null) return;                        // cancelled
+
+        boolean ok = warehouse.addToWishlist(context.getUser(), productID, qty);
+        display(ok ? "Product added to wishlist." : "Error: client or product not found.");
+    }
+
+    private void showWishlist()
+    {
+        Client client = warehouse.getClient(context.getUser());
+        if (client == null) { display("Client not found."); return; }
+        List<WishlistItem> wishlist = client.getWishListItems();
+        if (wishlist.isEmpty()) { display("Wishlist is empty."); return; }
+        StringBuilder sb = new StringBuilder("Wishlist:\n");
+        for (WishlistItem item : wishlist) sb.append(item).append("\n");
+        display(sb.toString());
+    }
+
+    /** Buy everything in the wishlist (per the test sequence), then show the summary. */
+    private void placeOrder()
+    {
+        List<WishlistItem> wishlist = warehouse.getClientWishlist(context.getUser());
+        if (wishlist == null) { display("Client not found."); return; }
+        if (wishlist.isEmpty()) { display("Wishlist is empty."); return; }
 
         List<OrderLine> lines = new ArrayList<>();
         for (WishlistItem w : wishlist)
-        {
-            System.out.println(w);
-            System.out.print("Order this item? (y/n): ");
-            boolean order = in.nextLine().trim().equalsIgnoreCase("y");
-            if (!order) continue;
+            lines.add(new OrderLine(w.getProductID(), w.getQuantity()));
 
-            System.out.print("Enter quantity: ");
-            int qty;
-            try
-            {
-                qty = Integer.parseInt(in.nextLine().trim());
-            }
-            catch (NumberFormatException e)
-            {
-                System.out.println("  Not a number — line skipped.");
-                continue;
-            }
-            lines.add(new OrderLine(w.getProductID(), qty));
-        }
-        String summary = warehouse.createOrder(userID, lines);
-        System.out.println(summary);
+        display(warehouse.createOrder(context.getUser(), lines));
     }
 
-    public void exit() 
-    {
-        System.out.println("Exiting Client State.");
-        context.logout();
+    private class DetailsButton extends JButton implements ActionListener {
+        DetailsButton() { super("Client details"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { showClientDetails(); }
     }
-
-    @Override
-    public void run() {
-        boolean running = true;
-        while (running) {
-            System.out.println("\nClient State Menu:");
-            System.out.println("1. View Client Details");
-            System.out.println("2. Show Product List");
-            System.out.println("3. Show Client Transactions");
-            System.out.println("4. Add to Wishlist");
-            System.out.println("5. Display Client Wishlist");
-            System.out.println("6. Place Order");
-            System.out.println("7. Help");
-            System.out.println("0. Exit");
-            System.out.print("Enter your choice: ");
-            int choice = Integer.parseInt(in.nextLine());
-
-            switch (choice) {
-                case CLIENT_DETAILS -> getClientDetails();
-                case SHOW_PRODUCT_LIST -> showProductList();
-                case SHOW_CLIENT_TRANSACTIONS -> showClientTransactions();
-                case ADD_TO_WISHLIST -> addItemToWishlist();
-                case DISPLAY_CLIENT_WISHLIST -> displayClientWishlist();
-                case PLACE_ORDER -> placeOrder();
-                case HELP -> help();
-                case LOGOUT -> { exit(); running = false; }
-                default -> System.out.println("Invalid choice. Please try again.");
-            }
-        }
+    private class ProductsButton extends JButton implements ActionListener {
+        ProductsButton() { super("Show products"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { showProductList(); }
+    }
+    private class TransactionsButton extends JButton implements ActionListener {
+        TransactionsButton() { super("Transactions"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { showClientTransactions(); }
+    }
+    private class AddWishlistButton extends JButton implements ActionListener {
+        AddWishlistButton() { super("Add to wishlist"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { addItemToWishlist(); }
+    }
+    private class ShowWishlistButton extends JButton implements ActionListener {
+        ShowWishlistButton() { super("Show wishlist"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { showWishlist(); }
+    }
+    private class PlaceOrderButton extends JButton implements ActionListener {
+        PlaceOrderButton() { super("Place order"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { placeOrder(); }
+    }
+    private class LogoutButton extends JButton implements ActionListener {
+        LogoutButton() { super("Logout"); addActionListener(this); }
+        @Override public void actionPerformed(ActionEvent e) { context.logout(); }
     }
 }
