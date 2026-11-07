@@ -89,9 +89,16 @@ public class ManagerState extends WarehouseState
         frame.getContentPane().setLayout(new BorderLayout());   // buttons on top, output below
 
         JPanel buttons = new JPanel(new FlowLayout());
+        buttons.add(new AddProductButton());
+        buttons.add(new DisplayWaitlistButton());
+        buttons.add(new ReceiveShipmentButton());
+        buttons.add(new BecomeClerkButton());
+        buttons.add(new LogoutButton());
 
-
-        
+        output.setEditable(false);
+        frame.getContentPane().add(buttons, BorderLayout.NORTH);
+        frame.getContentPane().add(new JScrollPane(output), BorderLayout.CENTER);
+        showFrame(frame);
     }
 
     private class AddProductButton extends JButton implements ActionListener {

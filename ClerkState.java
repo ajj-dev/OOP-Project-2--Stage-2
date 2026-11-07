@@ -150,6 +150,6 @@ public class ClerkState extends WarehouseState
     private class BecomeClientButton extends JButton implements ActionListener
     {
         BecomeClientButton() { super("Become Client"); addActionListener(this); }
-        @Override public void actionPerformed(ActionEvent e) { becomeClient(); }
+        @Override public void actionPerformed(ActionEvent e) { becomeClient(); } 
     }
 }
