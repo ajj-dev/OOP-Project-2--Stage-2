@@ -18,6 +18,7 @@ public abstract class WarehouseState
     /** Clears the shared window and returns it, ready for this state to add buttons. */
     protected JFrame prepareFrame()
     {
+        clearOutput();
         JFrame frame = context.getFrame();
         frame.getContentPane().removeAll();
         frame.getContentPane().setLayout(new FlowLayout());
@@ -90,4 +91,6 @@ public abstract class WarehouseState
     }
 
     protected void display(String text) { output.setText(text); }
+
+    protected void clearOutput() { output.setText(""); }
 }

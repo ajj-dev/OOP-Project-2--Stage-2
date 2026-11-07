@@ -71,11 +71,11 @@ public class ClientState extends WarehouseState
     private void addItemToWishlist() {
         String productID = promptRequired("Enter product ID:");
         if (productID == null) return;                 // cancelled
-        Integer qty = promptInt("Enter quantity:");
+        Integer qty = promptInt("Enter quantity:", 1);
         if (qty == null) return;                        // cancelled
 
         boolean ok = warehouse.addToWishlist(context.getUser(), productID, qty);
-        display(ok ? "Product added to wishlist." : "Error: client or product not found.");
+        display(ok ? "Product added to wishlist. Product ID: " + productID : "Error: client or product not found.");
     }
 
     private void showWishlist()
@@ -89,7 +89,6 @@ public class ClientState extends WarehouseState
         display(sb.toString());
     }
 
-    /** Buy everything in the wishlist (per the test sequence), then show the summary. */
     private void placeOrder()
     {
         List<WishlistItem> wishlist = warehouse.getClientWishlist(context.getUser());
@@ -97,9 +96,17 @@ public class ClientState extends WarehouseState
         if (wishlist.isEmpty()) { display("Wishlist is empty."); return; }
 
         List<OrderLine> lines = new ArrayList<>();
-        for (WishlistItem w : wishlist)
-            lines.add(new OrderLine(w.getProductID(), w.getQuantity()));
+        for (WishlistItem w : wishlist) {
+            display(w.toString());
+            String confirmation = promptRequired("Order item " + w.getProductID() + "? (y/n) (enter 0 to exit): ");
+            if (confirmation == null || confirmation.equals("0")) return;
+            boolean order = confirmation.equalsIgnoreCase("y");
+            if (!order) continue;
 
+            Integer quantity = promptInt("Enter quantity:", 0);
+            if (quantity == null) return;
+            lines.add(new OrderLine(w.getProductID(), quantity));
+        }
         display(warehouse.createOrder(context.getUser(), lines));
     }
 

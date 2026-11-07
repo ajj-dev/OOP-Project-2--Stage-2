@@ -380,17 +380,13 @@ public class Warehouse
 
     public List<ProductView> getProductListView(int userType) 
     {
-        switch (userType) 
+        return switch (userType) 
         {
-            case 0 -> getProductListViewForCustomer();// Customer
-                 
-            case 1 -> getProductListViewForClerk();// Clerk
-                 
-            case 2 -> getProductListViewForManager();// Manager
-            
-            default -> throw new IllegalArgumentException("Invalid user type: " + userType); 
-        }
-        return null; // This line will never be reached due to the exception thrown for invalid user types
+            case 0 -> getProductListViewForCustomer();  // Customer
+            case 1 -> getProductListViewForClerk();     // Clerk
+            case 2 -> getProductListViewForManager();   // Manager
+            default -> throw new IllegalArgumentException("Invalid user type: " + userType);
+        };
     }
 
     private List<ProductView> getProductListViewForCustomer() 

@@ -23,7 +23,7 @@ public class ManagerState extends WarehouseState
     public void addProduct() {
         String name = promptRequired("Enter product name:");
         Double price = promptDouble("Enter product price:");
-        Integer stock = promptInt("Enter product stock quantity:");
+        Integer stock = promptInt("Enter initial stock:", 0);
         String id = warehouse.addProduct(name, price, stock);
         StringBuilder sb = new StringBuilder();
         sb.append("Product added:\nID: ").append(id);
@@ -54,7 +54,7 @@ public class ManagerState extends WarehouseState
             String productID = promptRequired("Enter product ID:");
             if (productID.isEmpty()) break;
 
-            Integer qty = promptInt("Quantity received:");
+            Integer qty = promptInt("Quantity received:", 1);
             if (qty == null) break;                      
             if (qty <= 0) {
                 display("Quantity must be positive.");
