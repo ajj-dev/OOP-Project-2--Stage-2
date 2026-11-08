@@ -2,6 +2,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * Login screen for selecting a warehouse role.
+ *
+ * @author Aj Johnson, Aaditya Malla, Chidera Izuora
+ * @version 1.0
+ */
 public class LoginState extends WarehouseState
 {
     private static LoginState instance;
@@ -9,13 +15,20 @@ public class LoginState extends WarehouseState
 
     private LoginState() { super(); }
 
+    /**
+     * Returns the singleton instance of LoginState.
+     * @return the singleton instance of LoginState
+     */
     public static LoginState getInstance()
     {
         if (instance == null) instance = new LoginState();
         return instance;
     }
 
-    /** Build the login screen on the shared window. Event-driven: no loop. */
+    /**
+     * Build the login screen on the shared window. Event-driven: no loop.
+     * @param frame the frame to build the login screen on
+     */
     @Override
     public void run()
     {
@@ -33,6 +46,9 @@ public class LoginState extends WarehouseState
         showFrame(frame);
     }
 
+    /**
+     * Logs in as a client.
+     */
     private void loginClient()
     {
         String id = JOptionPane.showInputDialog(context.getFrame(), "Enter client ID:");
@@ -46,29 +62,55 @@ public class LoginState extends WarehouseState
         context.login(WarehouseContext.CLIENT, id);
     }
 
+    /**
+     * Logs in as a clerk.
+     */
     private void loginClerk()   { context.login(WarehouseContext.CLERK, null); }
+    /**
+     * Logs in as a manager.
+     */
     private void loginManager() { context.login(WarehouseContext.MANAGER, null); }
+    /**
+     * Quits the application.
+     */
     private void quit()         { context.changeState(WarehouseContext.TERMINATE); }
 
+    /**
+     * Prepares the frame for the login state.
+     *
+     * @return the prepared JFrame
+     */
     private class ClientLoginButton extends JButton implements ActionListener
     {
         ClientLoginButton() { super("Login as Client"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { loginClient(); }
     }
 
+    /**
+     * Prepares the frame for the login state.
+     *
+     * @return the prepared JFrame
+     */
     private class ClerkLoginButton extends JButton implements ActionListener
     {
         ClerkLoginButton() { super("Login as Clerk"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { loginClerk(); }
     }
-
+    /**
+     * Prepares the frame for the login state.
+     *
+     * @return the prepared JFrame
+     */
     private class ManagerLoginButton extends JButton implements ActionListener
     {
         ManagerLoginButton() { super("Login as Manager"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { loginManager(); }
     }
-
-   
+   /**
+     * Prepares the frame for the login state.
+     *
+     * @return the prepared JFrame
+     */
     private class QuitButton extends JButton implements ActionListener
     {
         QuitButton() { super("Quit"); addActionListener(this); }

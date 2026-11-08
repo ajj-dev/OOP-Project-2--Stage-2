@@ -3,15 +3,27 @@ import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
 
-public class ClerkState extends WarehouseState 
+/**
+ * Screen and actions available to a warehouse clerk.
+ *
+ * @author Aj Johnson, Aaditya Malla. Chidera Izuora
+ * @version 1.0
+ */
+public class ClerkState extends WarehouseState
 {
     private static ClerkState instance;
     private final Warehouse warehouse = Warehouse.getInstance();
-
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
     private ClerkState() {
         super();
     }
 
+    /**
+     * Returns the singleton instance of ClerkState.
+     * @return the singleton instance of ClerkState
+     */
     public static ClerkState getInstance() {
         if (instance == null) {
             instance = new ClerkState();
@@ -19,6 +31,10 @@ public class ClerkState extends WarehouseState
         return instance;
     }
 
+    /**
+     * Transitions the user to the client state.
+     * @param clientID the ID of the client to transition to
+     */
     private void becomeClient() {
         String clientID = promptRequired("Enter client ID:");
         if (clientID == null) { display("Become client cancelled."); return; }
@@ -26,6 +42,9 @@ public class ClerkState extends WarehouseState
         context.become(WarehouseContext.CLIENT, clientID);
     }
 
+   /**
+    * Prompts the user for client information and adds a new client to the warehouse.
+    */
    public void addClient() {
     String name = promptRequired("Enter client name:");
     if (name == null) { display("Add client cancelled."); return; }
@@ -37,6 +56,9 @@ public class ClerkState extends WarehouseState
     display("Client added:\nID: " + id + "\nName: " + name + "\nAddress: " + address);
     }
 
+    /**
+     * Displays a list of all products available in the warehouse.
+     */
     public void viewProductList() {
         List<ProductView> products = warehouse.getProductListView(WarehouseContext.CLERK);
         if (products.isEmpty()) { display("No products available."); return; }
@@ -45,6 +67,10 @@ public class ClerkState extends WarehouseState
         display(sb.toString());                    // one setText, with the full list
     }
 
+    /**
+     * Displays a list of all clients in the warehouse.
+     * If there are no clients, a message indicating this is displayed instead.
+     */
     public void viewClientList() {
         List<Client> all = warehouse.getAllClients();
         if (all.isEmpty()) { display("No clients available."); return; }
@@ -55,6 +81,9 @@ public class ClerkState extends WarehouseState
         display(sb.toString());
     }
 
+    /**
+     * Displays clients whose account balance is below zero.
+     */
     public void viewOutstandingBalanceClients() {
         List<Client> all = warehouse.getAllClients();
         StringBuilder sb = new StringBuilder("Clients with outstanding balance:\n");
@@ -69,6 +98,9 @@ public class ClerkState extends WarehouseState
         display(found ? sb.toString() : "No clients with outstanding balances.");
     }
 
+    /**
+     * Prompts for and records a client payment.
+     */
     public void recordClientPayment() {
         String clientID = promptRequired("Enter client ID: ");
         if (clientID == null) {
@@ -85,11 +117,17 @@ public class ClerkState extends WarehouseState
         display(warehouse.receivePayment(clientID, amount));
     }
 
+    /**
+     * Logs out of the clerk state.
+     */
     public void exit() {
         display("Exiting Clerk State.\n");
         context.logout();
     }
 
+    /**
+     * Runs the clerk state, displaying the GUI with available actions.
+     */
     @Override
     public void run() {
         JFrame frame = prepareFrame();
@@ -111,45 +149,68 @@ public class ClerkState extends WarehouseState
         showFrame(frame);
     }
 
+    /**
+     * Prepares the frame for the clerk state.
+     *
+     * @return the prepared JFrame
+     */
     private class LogoutButton extends JButton implements ActionListener
     {
         LogoutButton() { super("Logout"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { exit(); }
     }
 
+    /**
+     * Button to add a new client.
+     */
     private class AddClientButton extends JButton implements ActionListener
     {
         AddClientButton() { super("Add Client"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { addClient(); }
     }
 
+    /**
+     * Button to view the product list.
+     */
     private class ViewProductListButton extends JButton implements ActionListener
     {
         ViewProductListButton() { super("View Product List"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { viewProductList(); }
     }
 
+    /**
+     * Button to view the list of all clients.
+     */
     private class ViewClientListButton extends JButton implements ActionListener
     {
         ViewClientListButton() { super("View Client List"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { viewClientList(); }
     }
 
+    /**
+     * Button to view clients with outstanding balances.
+     */
     private class ViewOutstandingBalanceClientsButton extends JButton implements ActionListener
     {
         ViewOutstandingBalanceClientsButton() { super("View Outstanding Balance Clients"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { viewOutstandingBalanceClients(); }
     }
 
+    /**
+     * Button to record a client payment.
+     */
     private class RecordClientPaymentButton extends JButton implements ActionListener
     {
         RecordClientPaymentButton() { super("Record Client Payment"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { recordClientPayment(); }
     }
 
+    /**
+     * Button to transition to the client state.
+     */
     private class BecomeClientButton extends JButton implements ActionListener
     {
         BecomeClientButton() { super("Become Client"); addActionListener(this); }
-        @Override public void actionPerformed(ActionEvent e) { becomeClient(); } 
+        @Override public void actionPerformed(ActionEvent e) { becomeClient(); }
     }
 }

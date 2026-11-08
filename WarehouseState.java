@@ -2,6 +2,12 @@ import java.awt.*;
 import java.util.Scanner;
 import javax.swing.*;
 
+/**
+ * Base class for the role-specific warehouse screens.
+ * <p>WarehouseState is an abstract class that defines the common behavior and interface for different warehouse roles (client, clerk, manager, login). It provides methods for preparing and displaying the shared application window, handling user input, and managing the output area.</p>
+ * @author Aj Johnson, Aaditya Malla. Chidera Izuora
+ * @version 1.0
+ */
 public abstract class WarehouseState
 {
     /** The one FSM context, shared by all states. */
@@ -12,10 +18,14 @@ public abstract class WarehouseState
 
     protected final JTextArea output = new JTextArea(16, 44);
 
-    /** Builds this state's screen (GUI) or runs its menu loop (text). */
+    /** Builds this state's screen or runs its menu loop. */
     public abstract void run();
 
-    /** Clears the shared window and returns it, ready for this state to add buttons. */
+
+    /**
+     * Clears the shared window and returns it, ready for this state to add buttons.
+     * @return the prepared frame
+     */
     protected JFrame prepareFrame()
     {
         clearOutput();
@@ -25,7 +35,10 @@ public abstract class WarehouseState
         return frame;
     }
 
-    /** Shows the shared window after this state has added its components. */
+    /**
+     * Shows the shared window after this state has added its components.
+     * @param frame the frame to show
+     */
     protected void showFrame(JFrame frame)
     {
         frame.setVisible(true);
@@ -34,6 +47,11 @@ public abstract class WarehouseState
         frame.toFront();
     }
 
+    /**
+     * Prompts the user for a command.
+     * @param prompt the prompt to display
+     * @return the user's command
+     */
     protected int getCommand(String prompt)
     {
         while (true)
@@ -43,20 +61,32 @@ public abstract class WarehouseState
             catch (NumberFormatException e) { System.out.println("Please enter a number."); }
         }
     }
-
+    /**
+     * Prompts the user for a token (string).
+     * @param prompt the prompt to display
+     * @return the user's input
+     */
     protected String getToken(String prompt)
     {
         System.out.print(prompt);
         return in.nextLine().trim();
     }
-
+    /**
+     * Prompts the user for a yes/no answer.
+     * @param prompt the prompt to display
+     * @return true if the user answered yes, false otherwise
+     */
     protected boolean yesOrNo(String prompt)
     {
         System.out.print(prompt + " (y/n): ");
         return in.nextLine().trim().equalsIgnoreCase("y");
     }
 
-    /** Prompt for a required text field: re-asks on blank, returns null if cancelled. */
+    /**
+     * Prompt for a required text field: re-asks on blank, returns null if cancelled.
+     * @param label the label for the input field
+     * @return the user's input, or null if cancelled
+     */
     protected String promptRequired(String label) {
         while (true) {
             String value = JOptionPane.showInputDialog(context.getFrame(), label);
@@ -67,7 +97,11 @@ public abstract class WarehouseState
         }
     }
 
-    /** Prompt for a whole number: re-asks on bad input, returns null if cancelled. */
+    /**
+     * Prompt for a whole number: re-asks on bad input, returns null if cancelled.
+     * @param label the label for the input field
+     * @return the user's input, or null if cancelled
+     */
     protected Integer promptInt(String label) {
         while (true) {
             String value = JOptionPane.showInputDialog(context.getFrame(), label);
@@ -78,7 +112,11 @@ public abstract class WarehouseState
             }
         }
     }
-
+    /**
+     * Prompt for a decimal number: re-asks on bad input, returns null if cancelled.
+     * @param label the label for the input field
+     * @return the user's input, or null if cancelled
+     */
     protected Double promptDouble(String label) {
         while (true) {
             String value = JOptionPane.showInputDialog(context.getFrame(), label);
@@ -90,7 +128,14 @@ public abstract class WarehouseState
         }
     }
 
+    /**
+     * Displays text in the output area.
+     * @param text the text to display
+     */
     protected void display(String text) { output.setText(text); }
 
+    /**
+     * Clears the output area.
+     */
     protected void clearOutput() { output.setText(""); }
 }

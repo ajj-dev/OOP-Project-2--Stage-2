@@ -4,15 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
-public class ManagerState extends WarehouseState 
+/** Screen and actions available to a warehouse manager.
+ * @author Aj Johnson, Aaditya Malla, Chidera Izuora
+ * @version 1.0
+ */
+public class ManagerState extends WarehouseState
 {
     private static ManagerState instance;
     private final Warehouse warehouse = Warehouse.getInstance();
-
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
     private ManagerState() {
         super();
     }
 
+    /**
+     * Returns the singleton instance of ManagerState.
+     * @return the singleton instance of ManagerState
+     */
     public static ManagerState getInstance() {
         if (instance == null) {
             instance = new ManagerState();
@@ -20,6 +30,10 @@ public class ManagerState extends WarehouseState
         return instance;
     }
 
+    /**
+     * Prompts for and adds a product to the catalog.
+     * @return the ID of the added product
+     */
     public void addProduct() {
         String name = promptRequired("Enter product name:");
         Double price = promptDouble("Enter product price:");
@@ -30,6 +44,10 @@ public class ManagerState extends WarehouseState
         display(sb.toString());
     }
 
+    /**
+     * Prompts for a product and displays its waitlist.
+     * @return the waitlist of the product
+     */
     public void displayWaitlist() {
         String productID = promptRequired("Enter product ID:");
         List<WaitlistView> waitlist = warehouse.getProductWaitlistView(productID);
@@ -45,6 +63,10 @@ public class ManagerState extends WarehouseState
         display(sb.toString());
     }
 
+    /**
+     * Prompts for shipment lines and submits the shipment.
+     * @return the report of the shipment
+     */
     public void receiveShipment() {
         List<ShipmentLine> lines = new ArrayList<>();
 
@@ -55,7 +77,7 @@ public class ManagerState extends WarehouseState
             if (productID.isEmpty()) break;
 
             Integer qty = promptInt("Quantity received:", 1);
-            if (qty == null) break;                      
+            if (qty == null) break;
             if (qty <= 0) {
                 display("Quantity must be positive.");
                 continue;
@@ -73,15 +95,24 @@ public class ManagerState extends WarehouseState
         display(report);
     }
 
+    /**
+     * Switches to the clerk role.
+     * @param id the ID of the clerk
+     */
     public void becomeClerk() {
         context.login(context.CLERK, null);
     }
 
+    /**
+     * Logs out of the manager state.
+     */
     public void exit() {
         context.logout();
         display("Exiting Manager State.");
     }
-
+    /**
+     * Prepares the frame for the manager state.
+     */
     @Override
     public void run() {
         JFrame frame = prepareFrame();
@@ -100,27 +131,39 @@ public class ManagerState extends WarehouseState
         frame.getContentPane().add(new JScrollPane(output), BorderLayout.CENTER);
         showFrame(frame);
     }
-
+    /**
+     * Prepares the frame for the manager state.
+     *
+     * @return the prepared JFrame
+     */
     private class AddProductButton extends JButton implements ActionListener {
         AddProductButton() { super("Add Product"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { addProduct(); }
     }
-
+    /**
+     * Button to display the waitlist for a product.
+     */
     private class DisplayWaitlistButton extends JButton implements ActionListener {
         DisplayWaitlistButton() { super("Display Waitlist"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { displayWaitlist(); }
     }
-
+    /**
+     * Button to receive a shipment.
+     */
     private class ReceiveShipmentButton extends JButton implements ActionListener {
         ReceiveShipmentButton() { super("Receive Shipment"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { receiveShipment(); }
     }
-
+    /**
+     * Button to switch to the clerk role.
+     */
     private class BecomeClerkButton extends JButton implements ActionListener {
         BecomeClerkButton() { super("Become Clerk"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { becomeClerk(); }
     }
-
+    /**
+     * Button to log out and return to the login state.
+     */
     private class LogoutButton extends JButton implements ActionListener {
         LogoutButton() { super("Logout"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { exit(); }

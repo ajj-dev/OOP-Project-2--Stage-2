@@ -4,6 +4,12 @@ import java.util.Arrays;
 import java.util.Deque;
 import javax.swing.*;
 
+/**
+ * Coordinates warehouse role transitions and the shared application window.
+ * <p>WarehouseContext is a singleton that manages the current role (client, clerk, or manager) and the shared JFrame that all roles draw on. It also handles login and logout, and maintains a stack of previous roles for returning after impersonation.</p>
+ * @author Aj Johnson, Aaditya Malla. Chidera Izuora
+ * @version 1.0
+ */
 public class WarehouseContext
 {
     // state codes (also the acting role)
@@ -22,14 +28,18 @@ public class WarehouseContext
     private String userID;
 
     private static JFrame frame;   // the one shared window, reused by every state
-
+    /**
+     * A simple record to hold the state and user ID for returning after impersonation.
+     */
     private static final class ReturnFrame
     {
         final int state; final String userID;
         ReturnFrame(int state, String userID) { this.state = state; this.userID = userID; }
     }
     private final Deque<ReturnFrame> returnStack = new ArrayDeque<>();
-
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
     private WarehouseContext()
     {
         instance = this;   // break the init cycle: states' getInstance() calls us back
@@ -65,6 +75,11 @@ public class WarehouseContext
         frame.setLocation(320, 200);
     }
 
+    /**
+     * Returns the singleton state-machine context.
+     *
+     * @return the shared context
+     */
     public static WarehouseContext getInstance()
     {
         if (instance == null) instance = new WarehouseContext();
@@ -72,8 +87,14 @@ public class WarehouseContext
     }
 
     /** The window every state draws on. */
+    /** @return the shared application window */
     public JFrame getFrame() { return frame; }
 
+    /**
+     * Applies a transition from the current state.
+     *
+     * @param transition the transition event to apply
+     */
     public void changeState(int transition)
     {
         int next = nextState[currentState][transition];
@@ -83,14 +104,24 @@ public class WarehouseContext
         states[currentState].run();   // the new state re-skins the shared frame
     }
 
-    /** Enter a role directly from Login. No frame pushed, so its logout goes to Login. */
+    /**
+     * Enters a role directly from login.
+     *
+     * @param role the role to enter
+     * @param id the client ID, or {@code null} for staff roles
+     */
     public void login(int role, String id)
     {
         userID = id;
         changeState(roleToEvent(role));
     }
 
-    /** Impersonate: remember the caller, then transition to the target role. */
+    /**
+     * Enters another role while remembering the current role for logout.
+     *
+     * @param targetRole the role to enter
+     * @param id the ID associated with that role
+     */
     public void become(int targetRole, String id)
     {
         returnStack.push(new ReturnFrame(currentState, userID));
@@ -98,7 +129,9 @@ public class WarehouseContext
         changeState(roleToEvent(targetRole));
     }
 
-    /** Return to the caller if impersonating, else out to Login. Stack chooses the edge. */
+    /**
+     * Returns to the previous role, or to login when no role is being impersonated.
+     */
     public void logout()
     {
         int target; String restoreID;
@@ -113,13 +146,26 @@ public class WarehouseContext
         changeState(roleToEvent(target));
     }
 
+    /**
+     * Terminates the application after printing a goodbye message.
+     */
     public void terminate()
     {
         System.out.println("Goodbye.");
         System.exit(0);
     }
 
+    /**
+     * Returns the ID of the currently logged-in client, or {@code null} for staff.
+     *
+     * @return the ID of the currently logged-in client, or {@code null} for staff
+     */
     public String getUser() { return userID; }
+    /**
+     * Returns the current role/state code.
+     *
+     * @return the current role/state code
+     */
     public int getActingRole() { return currentState; }
 
     private int roleToEvent(int role)
@@ -134,6 +180,9 @@ public class WarehouseContext
         }
     }
 
+    /**
+     * Runs the active state.
+     */
     public void process() { states[currentState].run(); }
 
     public static void main(String[] args)

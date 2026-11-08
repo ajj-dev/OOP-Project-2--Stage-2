@@ -32,6 +32,11 @@ public class Warehouse
     private static final Warehouse instance = new Warehouse();
     private Warehouse() {} // Private constructor to enforce singleton pattern
 
+    /**
+     * Returns the singleton warehouse instance.
+     *
+     * @return the shared warehouse
+     */
     public static Warehouse getInstance()
     {
         return instance;
@@ -162,7 +167,7 @@ public class Warehouse
         Product p = catalog.searchForProduct(productID);
         return (p == null) ? null : p.getWaitlist();
     }
-    
+
 
     /**
      * Records a transaction on a client's account.
@@ -374,13 +379,26 @@ public class Warehouse
                 amount, c.getName(), c.getBalance());
     }
 
+    /**
+     * Finds a client by ID.
+     *
+     * @param clientID the client ID
+     * @return the matching client, or {@code null} if none exists
+     */
     public Client getClient(String clientID) {
         return clientList.searchForClient(clientID);
     }
 
-    public List<ProductView> getProductListView(int userType) 
+    /**
+     * Builds product views appropriate for a user's role.
+     *
+     * @param userType the role code: 0 for client, 1 for clerk, or 2 for manager
+     * @return product views for the requested role
+     * @throws IllegalArgumentException if {@code userType} is not a supported role
+     */
+    public List<ProductView> getProductListView(int userType)
     {
-        return switch (userType) 
+        return switch (userType)
         {
             case 0 -> getProductListViewForCustomer();  // Customer
             case 1 -> getProductListViewForClerk();     // Clerk
@@ -388,31 +406,43 @@ public class Warehouse
             default -> throw new IllegalArgumentException("Invalid user type: " + userType);
         };
     }
-
-    private List<ProductView> getProductListViewForCustomer() 
+    /**
+     * Returns a list of product views for customers (clients).
+     *
+     * @return a list of product views for customers
+     */
+    private List<ProductView> getProductListViewForCustomer()
     {
         List<ProductView> views = new ArrayList<>();
-        for (Product p : catalog.getAllProducts()) 
+        for (Product p : catalog.getAllProducts())
         {
             views.add(new ProductView(p.getID(), p.getName(), p.getPrice()));
         }
         return views;
     }
-
-    private List<ProductView> getProductListViewForClerk() 
+    /**
+     * Returns a list of product views for clerks.
+     *
+     * @return a list of product views for clerks
+     */
+    private List<ProductView> getProductListViewForClerk()
     {
         List<ProductView> views = new ArrayList<>();
-        for (Product p : catalog.getAllProducts()) 
+        for (Product p : catalog.getAllProducts())
         {
             views.add(new ProductView(p.getID(), p.getName(), p.getPrice(), p.getStock()));
         }
         return views;
     }
-
-    private List<ProductView> getProductListViewForManager() 
+    /**
+     * Returns a list of product views for managers.
+     *
+     * @return a list of product views for managers
+     */
+    private List<ProductView> getProductListViewForManager()
     {
         List<ProductView> views = new ArrayList<>();
-        for (Product p : catalog.getAllProducts()) 
+        for (Product p : catalog.getAllProducts())
         {
             views.add(new ProductView(p.getID(), p.getName(), p.getPrice(), p.getStock(), p.getWaitlist()));
         }

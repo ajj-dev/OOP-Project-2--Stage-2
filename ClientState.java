@@ -4,19 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 
+/**
+ * Screen and actions available to a warehouse client.
+ * @author Aj Johnson, Aaditya Malla. Chidera Izuora
+ * @version 1.0
+ */
 public class ClientState extends WarehouseState
 {
     private static ClientState instance;
     private final Warehouse warehouse = Warehouse.getInstance();
 
+    /**
+     * Private constructor to enforce singleton pattern.
+     */
     private ClientState() { super(); }
 
+    /**
+     * Returns the singleton instance of ClientState.
+     * @return the singleton instance of ClientState
+     */
     public static ClientState getInstance()
     {
         if (instance == null) instance = new ClientState();
         return instance;
     }
 
+    /**
+     * Displays the client interface, allowing the user to view details, products,
+     * transactions, manage their wishlist, and place orders.
+     */
     @Override
     public void run()
     {
@@ -39,6 +55,11 @@ public class ClientState extends WarehouseState
         showFrame(frame);
     }
 
+    /**
+     * Prepares the frame for the client state.
+     *
+     * @return the prepared JFrame
+     */
     private void showClientDetails()
     {
         Client client = warehouse.getClient(context.getUser());
@@ -48,6 +69,9 @@ public class ClientState extends WarehouseState
               + "\nAddress: " + client.getAddress());
     }
 
+    /**
+     * Displays a list of all products available in the warehouse.
+     */
     private void showProductList()
     {
         List<ProductView> views = warehouse.getProductListView(WarehouseContext.CLIENT);
@@ -57,6 +81,9 @@ public class ClientState extends WarehouseState
         display(sb.toString());
     }
 
+    /**
+     * Displays a list of all transactions for the current client.
+     */
     private void showClientTransactions()
     {
         Client client = warehouse.getClient(context.getUser());
@@ -68,6 +95,9 @@ public class ClientState extends WarehouseState
         display(sb.toString());
     }
 
+    /**
+     * Adds an item to the current client's wishlist.
+     */
     private void addItemToWishlist() {
         String productID = promptRequired("Enter product ID:");
         if (productID == null) return;                 // cancelled
@@ -78,6 +108,9 @@ public class ClientState extends WarehouseState
         display(ok ? "Product added to wishlist. Product ID: " + productID : "Error: client or product not found.");
     }
 
+    /**
+     * Displays the current client's wishlist.
+     */
     private void showWishlist()
     {
         Client client = warehouse.getClient(context.getUser());
@@ -89,6 +122,9 @@ public class ClientState extends WarehouseState
         display(sb.toString());
     }
 
+    /**
+     * Places an order for items in the current client's wishlist.
+     */
     private void placeOrder()
     {
         List<WishlistItem> wishlist = warehouse.getClientWishlist(context.getUser());
@@ -110,30 +146,51 @@ public class ClientState extends WarehouseState
         display(warehouse.createOrder(context.getUser(), lines));
     }
 
+    /**
+     * Button to display client details.
+     */
     private class DetailsButton extends JButton implements ActionListener {
         DetailsButton() { super("Client details"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { showClientDetails(); }
     }
+    /**
+     * Button to display the product list.
+     */
     private class ProductsButton extends JButton implements ActionListener {
         ProductsButton() { super("Show products"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { showProductList(); }
     }
+    /**
+     * Button to display client transactions.
+     */
     private class TransactionsButton extends JButton implements ActionListener {
         TransactionsButton() { super("Transactions"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { showClientTransactions(); }
     }
+    /**
+     * Button to add an item to the wishlist.
+     */
     private class AddWishlistButton extends JButton implements ActionListener {
         AddWishlistButton() { super("Add to wishlist"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { addItemToWishlist(); }
     }
+    /**
+     * Button to display the wishlist.
+     */
     private class ShowWishlistButton extends JButton implements ActionListener {
         ShowWishlistButton() { super("Show wishlist"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { showWishlist(); }
     }
+    /**
+     * Button to place an order for items in the wishlist.
+     */
     private class PlaceOrderButton extends JButton implements ActionListener {
         PlaceOrderButton() { super("Place order"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { placeOrder(); }
     }
+    /**
+     * Button to log out and return to the login state.
+     */
     private class LogoutButton extends JButton implements ActionListener {
         LogoutButton() { super("Logout"); addActionListener(this); }
         @Override public void actionPerformed(ActionEvent e) { context.logout(); }

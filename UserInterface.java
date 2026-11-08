@@ -8,8 +8,11 @@ import java.util.Scanner;
  * <p>The interface presents a text-based command menu that allows a user to
  * create clients and products, manage wishlists, place orders, receive
  * shipments, and record client payments.</p>
+ *
+ * @author Aj Johnson, Aaditya Malla. Chidera Izuora
+ * @version 1.0
  */
-public class UserInterface 
+public class UserInterface
 {
     private final Warehouse warehouse = Warehouse.getInstance();
     private final Scanner in = new Scanner(System.in);
@@ -20,9 +23,9 @@ public class UserInterface
      * <p>Each menu option dispatches to a helper method for the corresponding
      * warehouse action until the user chooses to exit.</p>
      */
-    public void run() 
+    public void run()
     {
-        while (true) 
+        while (true)
         {
             System.out.println("\n1) Add client  2) Add product  3) Add to wishlist  "
                 + "4) Print clients  5) Print products  6) Print wishlist  7) Process client order  "
@@ -53,7 +56,7 @@ public class UserInterface
     /**
      * Prompts the user to create a client and adds it to the warehouse.
      */
-    public void addClient() 
+    public void addClient()
     {
         System.out.print("Enter name: ");    String name = in.nextLine();
         System.out.print("Enter address: "); String address = in.nextLine();
@@ -64,7 +67,7 @@ public class UserInterface
     /**
      * Prompts the user for product details and adds a product to inventory.
      */
-    public void addProduct() 
+    public void addProduct()
     {
         System.out.print("Enter name: ");  String name = in.nextLine();
         System.out.print("Enter price: "); double price = Double.parseDouble(in.nextLine());
@@ -76,7 +79,7 @@ public class UserInterface
     /**
      * Prompts the user to add a product to a client's wishlist.
      */
-    public void addToWishlist() 
+    public void addToWishlist()
     {
         System.out.print("Enter client ID: ");  String clientID = in.nextLine();
         System.out.print("Enter product ID: "); String productID = in.nextLine();
@@ -85,7 +88,12 @@ public class UserInterface
         System.out.println(ok ? "Product added to wishlist." : "Error: client or product not found.");
     }
 
-    public static void main(String[] args) 
+    /**
+     * Starts the console application.
+     *
+     * @param args command-line arguments, ignored by this application
+     */
+    public static void main(String[] args)
     {
         new UserInterface().run();
     }
@@ -95,16 +103,16 @@ public class UserInterface
      */
     public void processClientOrder()
     {
-        System.out.print("Enter client ID: "); 
+        System.out.print("Enter client ID: ");
         String clientID = in.nextLine();
 
         List<WishlistItem> wishlist = warehouse.getClientWishlist(clientID);
-        if (wishlist == null) 
+        if (wishlist == null)
         {
             System.out.println("Client not found.");
             return;
         }
-        if (wishlist.isEmpty()) 
+        if (wishlist.isEmpty())
         {
             System.out.println("Wishlist is empty.");
             return;
@@ -210,7 +218,7 @@ public class UserInterface
         if (all.isEmpty()) { System.out.println("No clients available."); return; }
         for (Client c : all)
             System.out.printf("ID=%s, Name=%s, Address=%s, Balance=$%.2f%n",
-                    c.getID(), c.getName(), c.getAddress(), c.getBalance());    
+                    c.getID(), c.getName(), c.getAddress(), c.getBalance());
     }
     /**
      * Prints all products in the warehouse.

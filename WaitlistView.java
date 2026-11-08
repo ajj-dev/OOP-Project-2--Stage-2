@@ -11,7 +11,14 @@ public class WaitlistView
     private final int stock; // the number of units currently on hand for the product for which the client is waiting
 
     /**
-     * Creates a new WaitlistView object with the specified information.
+     * Creates a view of one client's waitlist entry.
+     *
+     * @param clientID the waiting client's ID
+     * @param productID the product ID
+     * @param waitingQuantity the quantity still waiting
+     * @param productName the product name
+     * @param price the product price
+     * @param stock the current stock
      */
     public WaitlistView(String clientID, String productID, int waitingQuantity,
                         String productName, double price, int stock)
